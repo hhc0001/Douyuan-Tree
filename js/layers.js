@@ -27,9 +27,18 @@ addLayer("p", {
     layerShown(){return true},
     upgrades: {
       11: {
-        name:"《开 始》",
-        description:"每秒获得 1 点数",
+        name: "《开 始》",
+        description: "每秒获得 1 点数",
         cost: new Decimal(1),
+      },
+      12: {
+        name: "《h o m o》",
+        description: "基于 DP 加成点数",
+        cost: new Decimal(5),
+        effect() {
+          return player[this.layer].points.add(1).pow(0.8)
+        },
+        effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
       },
     },
 })

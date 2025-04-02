@@ -27,18 +27,31 @@ addLayer("p", {
     layerShown(){return true},
     upgrades: {
       11: {
-        name: "《开 始》",
-        description: "每秒获得 1 点数",
+        name: "《自 然 风 光》",
+        description: "使点数乘以 2",
         cost: new Decimal(1),
+        effect() {
+          return new Decimal(2)
+        },
+        effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"},
       },
       12: {
         name: "《h o m o》",
         description: "基于 DP 加成点数",
         cost: new Decimal(5),
         effect() {
-          return player[this.layer].points.add(1).pow(0.8)
+          return player[this.layer].points.add(1).pow(0.6)
         },
-        effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
+        effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"},
       },
+      13: {
+        name: "《环 境 改 造》",
+        description: "基于点数加成点数",
+        cost: new Decimal(50),
+        effect() {
+          return Decimal.log10(player.points.add(10))
+        },
+        effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"},
+      }
     },
 })

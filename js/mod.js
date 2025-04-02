@@ -1,7 +1,7 @@
 let modInfo = {
 	name: "The Douyuan Tree",
 	author: "hhc0001",
-	pointsName: "",
+	pointsName: "点数",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
@@ -48,6 +48,7 @@ function getPointGen() {
 	if(hasUpgrade('p', 11)) gain = gain.times(upgradeEffect('p', 11))
 	if(hasUpgrade('p', 12)) gain = gain.times(upgradeEffect('p', 12))
 	if(hasUpgrade('p', 13)) gain = gain.times(upgradeEffect('p', 13))
+	if(hasUpgrade('p', 23)) gain = gain.times(upgradeEffect('p', 23))
 	return gain
 }
 
@@ -61,7 +62,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("1000"))
+	return player.points.gte(new Decimal("100000"))
 }
 
 

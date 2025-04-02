@@ -13,7 +13,7 @@ let modInfo = {
 // Set your version in num and name
 let VERSION = {
 	num: "1.0",
-	name: "DP 1",
+	name: "DP Final",
 }
 
 let changelog = `
@@ -64,7 +64,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("100000"))
+	return player.points.gte(new Decimal("1e73"))
 }
 
 

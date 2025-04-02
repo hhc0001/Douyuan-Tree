@@ -9,7 +9,7 @@ addLayer("p", {
     color: "#4BDC13",
     requires: new Decimal("1"), // Can be a function that takes requirement increases into account
     resource: "DP", // Name of prestige currency
-    baseResource: "points", // Name of resource prestige is based on
+    baseResource: "点数", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
@@ -25,7 +25,7 @@ addLayer("p", {
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "d", description: "D: Reset for DP", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "d", description: "D: 重置以获得 DP", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
     upgrades: {
@@ -134,7 +134,7 @@ addLayer("p", {
       33: {
         name: "开放",
         description: "村子开放了！解锁飞机票（P），DU32 效果变为乘法",
-        cost: new Decimal("1e65"),
+        cost: new Decimal("1e63"),
       },
     },
 })

@@ -13,14 +13,18 @@ let modInfo = {
 // Set your version in num and name
 let VERSION = {
 	num: "0.0",
-	name: "Intital Commit",
+	name: "DP 1",
 }
 
-let changelog = `<h1>Changelog:</h1><br>
+let changelog = `
+  <h1>更新日志：</h1><br>
+	<h3>v0.1</h3><br>
+	  - 加入了 DP, DU11、12、13、21<br>
+	<br>
 	<h3>v0.0</h3><br>
-		- Added things.`
+		- 初始版本，没有更新`
 
-let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
+let winText = `好吧，到此为止了，但是还会有更多......`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -38,9 +42,9 @@ function canGenPoints(){
 // Calculate points/sec!
 function getPointGen() {
 	if(!canGenPoints())
-		return new Decimal(0)
+		return new Decimal("0")
 
-	let gain = new Decimal(1)
+	let gain = new Decimal("1")
 	if(hasUpgrade('p', 11)) gain = gain.times(upgradeEffect('p', 11))
 	if(hasUpgrade('p', 12)) gain = gain.times(upgradeEffect('p', 12))
 	if(hasUpgrade('p', 13)) gain = gain.times(upgradeEffect('p', 13))
@@ -57,7 +61,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e1000"))
+	return player.points.gte(new Decimal("1000"))
 }
 
 

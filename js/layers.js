@@ -24,5 +24,12 @@ addLayer("p", {
     hotkeys: [
         {key: "d", description: "D: Reset for douyuan points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true}
+    layerShown(){return true},
+    upgrades: {
+      11: {
+        name:"《开 始》",
+        description:"每秒获得 1 点数",
+        cost: new Decimal(1),
+      },
+    },
 })

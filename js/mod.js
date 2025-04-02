@@ -12,12 +12,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
+	num: "1.0",
 	name: "DP 1",
 }
 
 let changelog = `
   <h1>更新日志：</h1><br>
+	<h3>v1.0</h3><br>
+	  - 加入了 DU22、23、31、32、33（DU 感觉膨胀了）<br>
 	<h3>v0.1</h3><br>
 	  - 加入了 DP, DU11、12、13、21<br>
 	<br>

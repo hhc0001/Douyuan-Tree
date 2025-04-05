@@ -14,8 +14,8 @@ addLayer("p", {
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
-        mult = new Decimal("1")
-        //mult = mult.times(effect('P'))
+        mult = new Decimal("2")
+        mult = mult.times(player["P"].points.add(1).pow(3))
         if(hasUpgrade('p', 21)) mult = mult.times(upgradeEffect('p', 21))
         if(hasUpgrade('p', 22)) mult = mult.times(upgradeEffect('p', 22))
         if(hasUpgrade('p', 23)) mult = mult.times(upgradeEffect('p', 23))
@@ -145,7 +145,7 @@ addLayer("P", {
   symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
   position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
   startData() { return {
-    unlocked: true,
+    unlocked: false,
     points: new Decimal("0"),
   }},
   color: "#FFFFFF",
@@ -169,11 +169,7 @@ addLayer("P", {
   ],
   layerShown(){return true},
   branches: ['p'],
-  effect() {
-    return player[this.layer].points.add(1).pow(3)
-  },
   effectDescription() {
-    effect = this.effect()
-    return "加成 DP 获取 " + format(effect) + "x"
+    return "加成 DP 获取 " + format(player["P"].points.add(1).pow(3)) + "x"
   },
 })

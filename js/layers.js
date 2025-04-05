@@ -15,6 +15,7 @@ addLayer("p", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal("1")
+        //mult = mult.times(effect('P'))
         if(hasUpgrade('p', 21)) mult = mult.times(upgradeEffect('p', 21))
         if(hasUpgrade('p', 22)) mult = mult.times(upgradeEffect('p', 22))
         if(hasUpgrade('p', 23)) mult = mult.times(upgradeEffect('p', 23))
@@ -137,4 +138,42 @@ addLayer("p", {
         cost: new Decimal("1e63"),
       },
     },
+})
+
+addLayer("P", {
+  name: "飞机票", // This is optional, only used in a few places, If absent it just uses the layer id.
+  symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
+  position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+  startData() { return {
+    unlocked: true,
+    points: new Decimal("0"),
+  }},
+  color: "#FFFFFF",
+  requires: new Decimal("1e72"), // Can be a function that takes requirement increases into account
+  resource: "飞机票", // Name of prestige currency
+  baseResource: "DP", // Name of resource prestige is based on
+  baseAmount() {return player['p'].points}, // Get the current amount of baseResource
+  type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+  exponent: 2, // Prestige currency exponent
+  base: 10,
+  gainMult() { // Calculate the multiplier for main currency from bonuses
+      mult = new Decimal("1")
+      return mult
+  },
+  gainExp() { // Calculate the exponent on main currency from bonuses
+      return new Decimal("1")
+  },
+  row: 1, // Row the layer is in on the tree (0 is the first row)
+  hotkeys: [
+      {key: "p", description: "P: 重置以获得飞机票", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+  ],
+  layerShown(){return true},
+  branches: ['p'],
+  effect() {
+    return player[this.layer].points.add(1).pow(3)
+  },
+  effectDescription() {
+    effect = this.effect()
+    return "加成 DP 获取 " + format(effect) + "x"
+  },
 })

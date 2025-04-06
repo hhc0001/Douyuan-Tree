@@ -18,12 +18,12 @@ let VERSION = {
 
 let changelog = `
   <h1>更新日志：</h1><br>
-	<h3>v1.0</h3><br>
+	<h3>vbeta 1.0</h3><br>
 	  - 加入了 DU22、23、31、32、33（DU 感觉膨胀了）<br>
-	<h3>v0.1</h3><br>
+	<h3>vpre-build 0.1</h3><br>
 	  - 加入了 DP, DU11、12、13、21<br>
 	<br>
-	<h3>v0.0</h3><br>
+	<h3>vpre-build 0.0</h3><br>
 		- 初始版本，没有更新`
 
 let winText = `好吧，到此为止了，但是还会有更多......`
@@ -55,6 +55,10 @@ function getPointGen() {
 		if(hasUpgrade('P', 21)) gain = gain.times(player["P"].points.add(1).pow(30))
 		else gain = gain.times(player["P"].points.add(1).pow(3))
 	}
+	if(hasUpgrade('I', 12)) gain = gain.times(upgradeEffect('I', 12))
+	if(gain.gte(new Decimal("1e9000"))) {
+		gain = new Decimal("1e9000").times(gain.div(new Decimal("1e9000")).pow(0.4))
+	}
 	return gain
 }
 
@@ -68,7 +72,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("1e73"))
+	return player.points.gte(new Decimal("e1e9"))
 }
 
 

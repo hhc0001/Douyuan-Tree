@@ -21,6 +21,10 @@ addLayer("p", {
       if(hasUpgrade('p', 22)) mult = mult.times(upgradeEffect('p', 22))
       if(hasUpgrade('p', 23)) mult = mult.times(upgradeEffect('p', 23))
       if(hasUpgrade('P', 11)) mult = mult.times(4)
+      
+      if(mult.gte(new Decimal("1e10000"))) {
+        mult = new Decimal("1e10000").times(mult.div(new Decimal("1e10000")).pow(0.4))
+      }
       return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -61,8 +65,13 @@ addLayer("p", {
         description: "基于 DP 加成点数",
         cost: new Decimal("5"),
         effect() {
-          if(hasUpgrade("P", 13)) {return player[this.layer].points.add(1).pow(0.75).times(Decimal.log2(Decimal.log2(player[this.layer].points.add(2)).add(2)))}
-          return player[this.layer].points.add(1).pow(0.7)
+          eff = new Decimal("1")
+          if(hasUpgrade("P", 13)) {eff = player[this.layer].points.add(1).pow(0.75).times(Decimal.log2(Decimal.log2(player[this.layer].points.add(2)).add(2)))}
+          else {eff = player[this.layer].points.add(1).pow(0.7)}
+          if(eff.gte(new Decimal("1e100"))) {
+            eff = new Decimal("1e100").times(eff.div(new Decimal("1e100")).pow(0.6))
+          }
+          return eff
         },
         effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"},
       },
@@ -72,8 +81,13 @@ addLayer("p", {
         description: "基于点数加成点数",
         cost: new Decimal("20"),
         effect() {
-          if(hasUpgrade("P", 12)) {return Decimal.log2(player.points.add(10)).pow(10)}
-          return Decimal.log10(player.points.add(10)).pow(2)
+          eff = new Decimal("1")
+          if(hasUpgrade("P", 12)) {eff = Decimal.log2(player.points.add(10)).pow(10)}
+          else {eff = Decimal.log10(player.points.add(10)).pow(2)}
+          if(eff.gte(new Decimal("1e100"))) {
+            eff = new Decimal("1e100").times(eff.div(new Decimal("1e100")).pow(0.6))
+          }
+          return eff
         },
         effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"},
       },
@@ -83,8 +97,13 @@ addLayer("p", {
         description: "基于点数加成 DP",
         cost: new Decimal("111"),
         effect() {
-          if(hasUpgrade("P", 12)) {return player.points.add(1).pow(0.2).times(Decimal.log2(player.points.add(10)).pow(3))}
-          return player.points.add(1).pow(0.15)
+          eff = new Decimal("1")
+          if(hasUpgrade("P", 12)) {eff = player.points.add(1).pow(0.2).times(Decimal.log2(player.points.add(10)).pow(3))}
+          else {eff = player.points.add(1).pow(0.15)}
+          if(eff.gte(new Decimal("1e100"))) {
+            eff = new Decimal("1e100").times(eff.div(new Decimal("1e100")).pow(0.6))
+          }
+          return eff
         },
         effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"},
       },
@@ -94,8 +113,13 @@ addLayer("p", {
         description: "基于 DP 加成 DP",
         cost: new Decimal("2222"),
         effect() {
-          if(hasUpgrade("P", 13)) {return player[this.layer].points.add(1).pow(0.15)}
-          return player[this.layer].points.add(1).pow(0.1)
+          eff = new Decimal("1")
+          if(hasUpgrade("P", 13)) {eff = player[this.layer].points.add(1).pow(0.15)}
+          else {eff = player[this.layer].points.add(1).pow(0.1)}
+          if(eff.gte(new Decimal("1e100"))) {
+            eff = new Decimal("1e100").times(eff.div(new Decimal("1e100")).pow(0.1))
+          }
+          return eff
         },
         effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"},
       },
@@ -144,6 +168,7 @@ addLayer("p", {
             if(hasUpgrade("P", 24)) mult = mult.times(multBase.pow(5)), multMult = multMult.pow(1.1)
           }
           mult = Decimal.pow(mult, multMult)
+          if(mult.gte("1e50")) {mult = new Decimal("1e50").times(mult.div(new Decimal("1e50")).pow(0.3))}
           return mult
         },
         effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"},
@@ -182,7 +207,7 @@ addLayer("p", {
         name: "开放",
         title: "村子开放了！",
         description: "解锁飞机票（PT），DU32 效果变为乘法",
-        cost: new Decimal("1e155"),
+        cost: new Decimal("1e154"),
       },
     },
 })
@@ -196,7 +221,7 @@ addLayer("P", {
     points: new Decimal("0"),
   }},
   color: "#FFFFFF",
-  requires: new Decimal("1e212"), // Can be a function that takes requirement increases into account
+  requires: new Decimal("1e183"), // Can be a function that takes requirement increases into account
   resource: "飞机票", // Name of prestige currency
   baseResource: "DP", // Name of resource prestige is based on
   baseAmount() {return player['p'].points}, // Get the current amount of baseResource
@@ -206,12 +231,14 @@ addLayer("P", {
   },
   exponent() {
     if(hasUpgrade("P", 14)) {return 2}
+    if(hasUpgrade("P", 13)) {return 3}
     return 4
   }, // Prestige currency exponent
   base: 50,
   gainMult() { // Calculate the multiplier for main currency from bonuses
     mult = new Decimal("1")
-    if(hasUpgrade("P", 22)) mult = mult.times(upgradeEffect("P", 22))
+    if(hasUpgrade("P", 22)) mult = mult.div(upgradeEffect("P", 22))
+    if(hasUpgrade('T', 11)) mult = mult.div(2)
     return mult
   },
   gainExp() { // Calculate the exponent on main currency from bonuses
@@ -247,8 +274,8 @@ addLayer("P", {
     13: {
       name: "为什么这里会有飞机场？",
       title: "为什么这里会有飞机场？",
-      description: "使 DU12 和 DU22 变得更好（《四 世 同 堂》）",
-      cost: new Decimal(5)
+      description: "使 DU12 和 DU22 变得更好（《四 世 同 堂》），并增幅 PT 获取",
+      cost: new Decimal(4)
     },
     14: {
       name: "《航 站 楼 住 宿》",
@@ -260,13 +287,13 @@ addLayer("P", {
       name: "高 航站楼 制作群",
       title: "高 航站楼 制作群",
       description: "使 PT 效果提升至 10 次方",
-      cost: new Decimal(38)
+      cost: new Decimal(17)
     },
     22: {
       name: "更多航班",
       title: "更多航班",
       description: "航班变多了，使点数增幅 PT 获取",
-      cost: new Decimal(49),
+      cost: new Decimal(21),
       effect() {
         return Decimal.log10(Decimal.log10(Decimal.log10(player.points.add(10)).add(10)).add(10))
       },
@@ -278,13 +305,13 @@ addLayer("P", {
       name: "大型飞机",
       title: "大型飞机",
       description: "飞机变大变高了，使 PT 增幅 DU23",
-      cost: new Decimal(61)
+      cost: new Decimal(25)
     },
     24: {
       name: "更多的交通方式",
       title: "出现了更多的交通方式", 
       description: "解锁个人（I)、火车票（TT），PU23 变得更强",
-      cost: new Decimal(75)
+      cost: new Decimal(30)
     }
   },
   milestones: {
@@ -299,9 +326,9 @@ addLayer("P", {
       done() {return player[this.layer].points.gte(5)}
     },
     2: {
-      requirementDescription: "获得 49 个飞机票（PM3）",
+      requirementDescription: "获得 25 个飞机票（PM3）",
       effectDescription: "可以购买最大 PT",
-      done() {return player[this.layer].points.gte(49)}
+      done() {return player[this.layer].points.gte(25)}
     }
   }
 })
@@ -314,7 +341,7 @@ addLayer('T', {
     points: new Decimal("0")
   }},
   color: "#CCFCCF",
-  requires: new Decimal("1e40150"),
+  requires: new Decimal("1e11204"),
   resource: "火车票",
   baseResource: "DP",
   baseAmount() {return player['p'].points},
@@ -323,6 +350,7 @@ addLayer('T', {
   gainMult() {
     mult = new Decimal("1")
     if(hasUpgrade('I', 12)) mult = mult.times("2")
+    if(hasUpgrade('T', 11)) mult = mult.times("2")
     return mult
   },
   gainExp() {
@@ -337,7 +365,10 @@ addLayer('T', {
   branches: ['p', 'P'],
   upgrades: {
     11: {
-      name: "",
+      name: "飞机的替代品",
+      title: "飞机的替代品",
+      description: "使 TT 乘以 2，使 PT 乘以 2，使 TT 加成 I 获取",
+      cost: new Decimal(20),
     }
   }
 })
@@ -350,7 +381,7 @@ addLayer('I', {
     points: new Decimal("0")
   }},
   color: "#EC1112",
-  requires: new Decimal("154"),
+  requires: new Decimal("81"),
   resource: "个人游客",
   baseResource: "PT",
   baseAmount() {return player['P'].points},
@@ -358,6 +389,7 @@ addLayer('I', {
   exponent: 1,
   gainMult() {
     mult = new Decimal("1")
+    if(hasUpgrade('T', 11)) mult = mult.times(player['T'].points.add(1).pow(0.5))
     return mult
   },
   gainExp() {
@@ -387,7 +419,7 @@ addLayer('I', {
       description: "铁轨出现了，使 TT 获取量乘以 2 并使 I 增幅点数获取",
       cost: new Decimal("10000"),
       effect() {
-        return player[this.layer].points.add(1).times(Decimal.log10(player[this.layer].points.add(10)))
+        return player[this.layer].points.add(1).pow(0.8)
       },
       effectDisplay() {
         return format(upgradeEffect(this.layer, this.id)) + 'x'

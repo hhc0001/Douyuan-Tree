@@ -12,12 +12,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "beta 1.0",
-	name: "DP Final",
+	num: "beta 1.1",
+	name: "I T 1",
 }
 
 let changelog = `
   <h1>更新日志：</h1><br>
+	<h3>vbeta 1.1</h3><br>
+	  - 加入了 I、T<br>
+	  - 修复了 TU11 导致膨胀的问题<br>
+		- 下层预告：B<br>
 	<h3>vbeta 1.0</h3><br>
 	  - 加入了 DU22、23、31、32、33（DU 感觉膨胀了）<br>
 	<h3>vpre-build 0.1</h3><br>

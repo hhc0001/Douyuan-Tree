@@ -367,8 +367,9 @@ addLayer('T', {
     11: {
       name: "飞机的替代品",
       title: "飞机的替代品",
-      description: "使 TT 乘以 2，使 PT 乘以 2，使 TT 加成 I 获取",
+      description: "使 TT 乘以 2，使 PT 乘以 2，使 TT 加成 I 获取，使 IU12 的效果在点数 SC1 之后再次生效",
       cost: new Decimal(20),
+      effectDisplay() {return format(player['T'].points.add(1).pow(0.5)) + 'x'}
     }
   }
 })

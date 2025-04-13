@@ -63,6 +63,7 @@ function getPointGen() {
 	if(gain.gte(new Decimal("1e9000"))) {
 		gain = new Decimal("1e9000").times(gain.div(new Decimal("1e9000")).pow(0.4))
 	}
+	if(hasUpgrade('I', 12) && hasUpgrade("T", 11)) gain = gain.times(upgradeEffect('I', 12))
 	return gain
 }
 

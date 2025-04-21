@@ -341,7 +341,7 @@ addLayer('T', {
     points: new Decimal("0")
   }},
   color: "#CCFCCF",
-  requires: new Decimal("1e11204"),
+  requires: new Decimal("1e11202"),
   resource: "火车票",
   baseResource: "DP",
   baseAmount() {return player['p'].points},
@@ -351,6 +351,7 @@ addLayer('T', {
     mult = new Decimal("1")
     if(hasUpgrade('I', 12)) mult = mult.times("2")
     if(hasUpgrade('T', 11)) mult = mult.times("2")
+    if(hasUpgrade('T', 12)) mult = mult.times(Decimal.log10(player['T'].points.add(10)))
     return mult
   },
   gainExp() {
@@ -365,11 +366,22 @@ addLayer('T', {
   branches: ['p', 'P'],
   upgrades: {
     11: {
-      name: "飞机的替代品",
-      title: "飞机的替代品",
+      name: "风景",
+      title: "风景",
       description: "使 TT 乘以 2，使 PT 乘以 2，使 TT 加成 I 获取，使 IU12 的效果在点数 SC1 之后再次生效",
-      cost: new Decimal(20),
+      cost() {
+        return new Decimal(20).times(new Decimal(1 + hasUpgrade('T', 12) + hasUpgrade('T', 13)))
+      },
       effectDisplay() {return format(player['T'].points.add(1).pow(0.5)) + 'x'}
+    },
+    12: {
+      name: "便宜的票价",
+      title: "便宜的票价",
+      description: "使 TT 增幅 TT 获取",
+      cost() {
+        return new Decimal(20).times(new Decimal(1 + hasUpgrade('T', 12) + hasUpgrade('T', 13)))
+      },
+      effectDisplay() {return format(Decimal.log10(player['T'].points.add(10))) + 'x'}
     }
   }
 })

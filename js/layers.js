@@ -43,7 +43,7 @@ addLayer("p", {
       let keep = [];
       if(layers[resettingLayer].row > this.row) {
         layerDataReset(this.layer, keep)
-        if(hasMilestone('P', 0)) {
+        if(layers[resettingLayer].id == 'P' && hasMilestone('P', 0)) {
           player.p.upgrades = [11, 12, 13, 21, 22, 23, 31, 32, 33]
         }
       }
@@ -238,7 +238,8 @@ addLayer("P", {
   gainMult() { // Calculate the multiplier for main currency from bonuses
     mult = new Decimal("1")
     if(hasUpgrade("P", 22)) mult = mult.div(upgradeEffect("P", 22))
-    if(hasUpgrade('T', 11)) mult = mult.div(2)
+    if(hasUpgrade('T', 11)) mult = mult.div(new Decimal("2"))
+    if(hasUpgrade("T", 13)) mult = mult.div(Decimal.log10(Decimal.log10(player['T'].points.add(10)).add(10)));
     return mult
   },
   gainExp() { // Calculate the exponent on main currency from bonuses
@@ -370,7 +371,7 @@ addLayer('T', {
       title: "风景",
       description: "使 TT 乘以 2，使 PT 乘以 2，使 TT 加成 I 获取，使 IU12 的效果在点数 SC1 之后再次生效",
       cost() {
-        return new Decimal(20).times(new Decimal(1 + hasUpgrade('T', 12) + hasUpgrade('T', 13)))
+        return new Decimal(20).times(new Decimal(1 + hasUpgrade('T', 12) + hasUpgrade('T', 13) + hasUpgrade('T', 14)))
       },
       effectDisplay() {return format(player['T'].points.add(1).pow(0.5)) + 'x'}
     },
@@ -379,9 +380,18 @@ addLayer('T', {
       title: "便宜的票价",
       description: "使 TT 增幅 TT 获取",
       cost() {
-        return new Decimal(20).times(new Decimal(1 + hasUpgrade('T', 12) + hasUpgrade('T', 13)))
+        return new Decimal(20).times(new Decimal(1 + hasUpgrade('T', 11) + hasUpgrade('T', 13) + hasUpgrade('T', 14)))
       },
       effectDisplay() {return format(Decimal.log10(player['T'].points.add(10))) + 'x'}
+    },
+    13: {
+      name: "稳定",
+      title: "稳定",
+      description: "使 TT 增幅 PT 获取（注意是 PT）",
+      cost() {
+        return new Decimal(20).times(new Decimal(1 + hasUpgrade('T', 11) + hasUpgrade('T', 12) + hasUpgrade('T', 14)))
+      },
+      effectDisplay() {return format(Decimal.log10(Decimal.log10(player['T'].points.add(10)).add(10)))}
     }
   }
 })
@@ -403,6 +413,7 @@ addLayer('I', {
   gainMult() {
     mult = new Decimal("1")
     if(hasUpgrade('T', 11)) mult = mult.times(player['T'].points.add(1).pow(0.5))
+    if(hasUpgrade('I', 13)) mult = mult.times(Decimal.log10(player['p'].points.add(10)).pow(0.5));
     return mult
   },
   gainExp() {
@@ -436,6 +447,15 @@ addLayer('I', {
       },
       effectDisplay() {
         return format(upgradeEffect(this.layer, this.id)) + 'x'
+      }
+    },
+    13: {
+      name: "受众广泛化",
+      title: "受众广泛化",
+      description: "广泛的受众使 DP 提升 I",
+      cost: new Decimal("2200000"),
+      effectDisplay() {
+        return format(Decimal.log10(player['p'].points.add(10)).pow(0.5)) + 'x'
       }
     },
   }

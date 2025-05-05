@@ -1,6 +1,6 @@
 addLayer("p", {
-    name: "DP", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "D", // This appears on the layer's node. Default is the id with the first letter capitalized
+    name: "WP", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "W", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
       unlocked: true,
@@ -8,7 +8,7 @@ addLayer("p", {
     }},
     color: "#4BDC13",
     requires: new Decimal("1"), // Can be a function that takes requirement increases into account
-    resource: "DP", // Name of prestige currency
+    resource: "WP", // Name of prestige currency
     baseResource: "点数", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
@@ -36,7 +36,7 @@ addLayer("p", {
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-      {key: "d", description: "D: 重置以获得 DP", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+      {key: "d", description: "D: 重置以获得 WP", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
     doReset(resettingLayer) {
@@ -62,7 +62,7 @@ addLayer("p", {
       12: {
         name: "《h o m o》",
         title: "人类，启动！",
-        description: "基于 DP 加成点数",
+        description: "基于 WP 加成点数",
         cost: new Decimal("5"),
         effect() {
           eff = new Decimal("1")
@@ -94,7 +94,7 @@ addLayer("p", {
       21: {
         name: "友好的环境",
         title: "环境：我感觉行了",
-        description: "基于点数加成 DP",
+        description: "基于点数加成 WP",
         cost: new Decimal("111"),
         effect() {
           eff = new Decimal("1")
@@ -110,7 +110,7 @@ addLayer("p", {
       22: {
         name: "定居",
         title: "定居",
-        description: "基于 DP 加成 DP",
+        description: "基于 WP 加成 WP",
         cost: new Decimal("2222"),
         effect() {
           eff = new Decimal("1")
@@ -126,7 +126,7 @@ addLayer("p", {
       23: {
         name: "房子",
         title: "房子",
-        description: "对于每一个 DU，使点数和 DP 乘以 2",
+        description: "对于每一个 DU，使点数和 WP 乘以 2",
         cost: new Decimal("40000"),
         effect() {
           mult = new Decimal("1")
@@ -196,7 +196,7 @@ addLayer("p", {
       32: {
         name: "扩张",
         title: "村子吸了人之后变大变高",
-        description: "使 DU23 的基础基于 DP 加成",
+        description: "使 DU23 的基础基于 WP 加成",
         cost: new Decimal("1e54"),
         effect() {
           return Decimal.log10(Decimal.log10(player[this.layer].points + 10) + 10)
@@ -223,7 +223,7 @@ addLayer("P", {
   color: "#FFFFFF",
   requires: new Decimal("1e183"), // Can be a function that takes requirement increases into account
   resource: "飞机票", // Name of prestige currency
-  baseResource: "DP", // Name of resource prestige is based on
+  baseResource: "WP", // Name of resource prestige is based on
   baseAmount() {return player['p'].points}, // Get the current amount of baseResource
   type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
   canBuyMax() {
@@ -252,8 +252,14 @@ addLayer("P", {
   layerShown(){return hasUpgrade("p", 33) || hasUpgrade("P", 11) || player["P"].points.gte(1)},
   branches: ['p'],
   effectDescription() {
-    if(hasUpgrade("P", 21)) return "加成 DP 获取 " + format(player["P"].points.add(1).pow(30)) + "x"
-    return "加成 DP 获取 " + format(player["P"].points.add(1).pow(3)) + "x"
+    if(hasUpgrade("P", 21)) return "加成 WP 获取 " + format(player["P"].points.add(1).pow(30)) + "x"
+    return "加成 WP 获取 " + format(player["P"].points.add(1).pow(3)) + "x"
+  },
+  doReset(resettingLayer) {
+    let keep = []
+    if(layers[resettingLayer].row > this.row || layers[resettingLayer].id == 'T') {
+      layerDatareset(this.layer, keep)
+    }
   },
   upgrades: {
     11: {
@@ -323,7 +329,7 @@ addLayer("P", {
     },
     1: {
       requirementDescription: "获得 5 个飞机票（PM2）",
-      effectDescription: "每秒获得 100% 重置时获得的 DP",
+      effectDescription: "每秒获得 100% 重置时获得的 WP",
       done() {return player[this.layer].points.gte(5)}
     },
     2: {
@@ -344,7 +350,7 @@ addLayer('T', {
   color: "#CCFCCF",
   requires: new Decimal("1e11202"),
   resource: "火车票",
-  baseResource: "DP",
+  baseResource: "WP",
   baseAmount() {return player['p'].points},
   type: "normal",
   exponent: 0.1,
@@ -452,7 +458,7 @@ addLayer('I', {
     13: {
       name: "受众广泛化",
       title: "受众广泛化",
-      description: "广泛的受众使 DP 提升 I",
+      description: "广泛的受众使 WP 提升 I",
       cost: new Decimal("2200000"),
       effectDisplay() {
         return format(Decimal.log10(player['p'].points.add(10)).pow(0.5)) + 'x'

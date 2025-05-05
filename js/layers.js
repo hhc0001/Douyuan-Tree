@@ -36,7 +36,7 @@ addLayer("p", {
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-      {key: "d", description: "D: 重置以获得 WP", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+      {key: "w", description: "W: 重置以获得 WP", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
     doReset(resettingLayer) {
@@ -126,7 +126,7 @@ addLayer("p", {
       23: {
         name: "房子",
         title: "房子",
-        description: "对于每一个 DU，使点数和 WP 乘以 2",
+        description: "对于每一个 WU，使点数和 WP 乘以 2",
         cost: new Decimal("40000"),
         effect() {
           mult = new Decimal("1")
@@ -176,7 +176,7 @@ addLayer("p", {
       31: {
         name: "村子",
         title: "村子使房子的数量增加",
-        description: "使 DU23 的起效数量基于 DU 数量倍增",
+        description: "使 WU23 的起效数量基于 WU 数量倍增",
         cost: new Decimal("1e12"),
         effect() {
           count = new Decimal("0")
@@ -196,7 +196,7 @@ addLayer("p", {
       32: {
         name: "扩张",
         title: "村子吸了人之后变大变高",
-        description: "使 DU23 的基础基于 WP 加成",
+        description: "使 WU23 的基础基于 WP 加成",
         cost: new Decimal("1e54"),
         effect() {
           return Decimal.log10(Decimal.log10(player[this.layer].points + 10) + 10)
@@ -206,7 +206,7 @@ addLayer("p", {
       33: {
         name: "开放",
         title: "村子开放了！",
-        description: "解锁飞机票（PT），DU32 效果变为乘法",
+        description: "解锁飞机票（PT），WU32 效果变为乘法",
         cost: new Decimal("1e154"),
       },
     },
@@ -265,7 +265,7 @@ addLayer("P", {
     11: {
       name: "如何获得飞机票，要先获得飞机票",
       title: "如何获得飞机票，要先获得飞机票",
-      description: "PT 效果同时也在点数上生效，DP 乘以 4",
+      description: "PT 效果同时也在点数上生效，WP 乘以 4",
       cost: new Decimal(2),
       effectDisplay() {
         if(hasUpgrade("P", 21)) return format(player["P"].points.add(1).pow(30)) + "x"
@@ -275,19 +275,19 @@ addLayer("P", {
     12: {
       name: "点数 压倒 点数",
       title: "点数 压倒 点数",
-      description: "使 DU13 和 DU21 变得更好（这是一个彩蛋。作者曾经玩过数字树，里面有一个挑战叫“点数 压倒 点数”，该升级因此得名）",
+      description: "使 WU13 和 WU21 变得更好（这是一个彩蛋。作者曾经玩过数字树，里面有一个挑战叫“点数 压倒 点数”，该升级因此得名）",
       cost: new Decimal(3)
     },
     13: {
       name: "为什么这里会有飞机场？",
       title: "为什么这里会有飞机场？",
-      description: "使 DU12 和 DU22 变得更好（《四 世 同 堂》），并增幅 PT 获取",
+      description: "使 WU12 和 WU22 变得更好（《四 世 同 堂》），并增幅 PT 获取",
       cost: new Decimal(4)
     },
     14: {
       name: "《航 站 楼 住 宿》",
       title: "《航 站 楼 住 宿》",
-      description: "使 PU 也参与 DU23 的计算，且效果更强，并增幅 PT 获取",
+      description: "使 PU 也参与 WU23 的计算，且效果更强，并增幅 PT 获取",
       cost: new Decimal(6)
     },
     21: {
@@ -311,7 +311,7 @@ addLayer("P", {
     23: {
       name: "大型飞机",
       title: "大型飞机",
-      description: "飞机变大变高了，使 PT 增幅 DU23",
+      description: "飞机变大变高了，使 PT 增幅 WU23",
       cost: new Decimal(25)
     },
     24: {
@@ -324,7 +324,7 @@ addLayer("P", {
   milestones: {
     0: {
       requirementDescription: "获得 3 个飞机票（PM1）",
-      effectDescription: "获得飞机票时不重置 DU",
+      effectDescription: "获得飞机票时不重置 WU",
       done() {return player[this.layer].points.gte(3)}
     },
     1: {
